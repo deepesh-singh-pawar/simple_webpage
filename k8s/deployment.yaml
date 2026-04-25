@@ -5,7 +5,7 @@ metadata:
   labels:
     app: simple-webpage
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: simple-webpage
@@ -40,4 +40,4 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080
+      #nodePort: 30080
