@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webpage
+  labels:
+    app: simple-webpage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-webpage
+  template:
+    metadata:
+      labels:
+        app: simple-webpage
+    spec:
+      containers:
+        - name: web
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: content
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+              readOnly: true
+      volumes:
+        - name: content
+          configMap:
+            name: web-content
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-webpage
+spec:
+  type: NodePort
+  selector:
+    app: simple-webpage
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
